@@ -34,15 +34,31 @@ Or install it yourself as:
 
     $ gem install hitnmiss
 
-## Define/Mixin a Repository
 
-Before you can use Hitnmiss to manage cache you first need to define a
-cache repository. This is done by defining a class for your repository
-and mixing the appropriate repository module in using `include`.
+## Basic Usage
 
-Below, are explanations of the **Standard Repository** and the **Background
-Refresh Repository** so that you can decide which one fits your needs as well as
-learn how to use them.
+Declare a basic ruby class, mixin the Hitnmiss repository, and declare a `fetch ` method:
+
+```ruby
+class MostRecentPrice
+  include Hitnmiss::Repository
+
+  default_expiration 30.minutes
+
+  def fetch(sku:)
+    go_get_some_expensive_data(sku)
+  end
+end
+```
+
+Then use the repository elsewhere to get the most recent price:
+
+```ruby
+  price = MostRecentPrice.new.get(sku: sku)
+```
+
+
+## Types of Repositories
 
 ### Standard Repository
 
